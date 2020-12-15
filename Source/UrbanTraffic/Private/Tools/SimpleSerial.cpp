@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "SimpleSerial.h"
+#include "Tools/SimpleSerial.h"
 
 SimpleSerial::~SimpleSerial() {
 	close();

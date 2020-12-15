@@ -104,7 +104,9 @@ void AVehicleBase::OnConstruction(const FTransform& Transform) {
 			UStaticMeshComponent* wheel_lf = NewObject<UStaticMeshComponent>(this);
 			wheel_lf->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, BONE_WHEEL_LF);
 			wheel_lf->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			wheel_lf->RelativeRotation.Yaw = 180;
+			FRotator wheel_lf_rot = wheel_lf->GetRelativeRotation();
+			wheel_lf_rot.Yaw = 180;
+			wheel_lf->SetRelativeRotation(wheel_lf_rot);
 			wheel_lf->RegisterComponent();
 			wheelComponents.Add(wheel_lf);
 			// front right wheel
@@ -117,7 +119,9 @@ void AVehicleBase::OnConstruction(const FTransform& Transform) {
 			UStaticMeshComponent* wheel_lb = NewObject<UStaticMeshComponent>(this);
 			wheel_lb->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform, BONE_WHEEL_LB);
 			wheel_lb->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			wheel_lb->RelativeRotation.Yaw = 180;
+			FRotator wheel_lb_rot = wheel_lb->GetRelativeRotation();
+			wheel_lb_rot.Yaw = 180;
+			wheel_lb->SetRelativeRotation(wheel_lb_rot);
 			wheel_lb->RegisterComponent();
 			wheelComponents.Add(wheel_lb);
 			// rear right wheel

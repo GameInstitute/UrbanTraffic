@@ -52,11 +52,11 @@ void IVehicleControllerInterface::bindVehicle(AVehicleBase* target) {
 	roadNodes.Remove(endPort);
 
 	USceneComponent* root = target->GetRootComponent();
-	FVector location = target->Bounding->RelativeLocation;
+	FVector location = target->Bounding->GetRelativeLocation();
 	FVector extend = target->Bounding->GetScaledBoxExtent();
 	// create head sensor
 	headSensor = NewObject<UObstacleSensorComponent>(target);
-	headSensor->RelativeLocation = FVector(location.X + extend.X - 65, 0, 120);
+	headSensor->SetRelativeLocation(FVector(location.X + extend.X - 65, 0, 120));
 	headSensor->RayQuantity = 3;
 	headSensor->TraceAngle = 10;
 	headSensor->TraceWidth = 40;
@@ -65,8 +65,8 @@ void IVehicleControllerInterface::bindVehicle(AVehicleBase* target) {
 	headSensor->RegisterComponent();
 	// create back sensor
 	backSensor = NewObject<UObstacleSensorComponent>(target);
-	backSensor->RelativeLocation = FVector(location.X - extend.X + 25, 0, 120);
-	backSensor->RelativeRotation = FRotator(0, 180, 0);
+	backSensor->SetRelativeLocation(FVector(location.X - extend.X + 25, 0, 120));
+	backSensor->SetRelativeRotation(FRotator(0, 180, 0));
 	backSensor->RayQuantity = 3;
 	backSensor->TraceWidth = 160;
 	backSensor->TraceLength = FVector2D(0, 180);
@@ -79,8 +79,8 @@ void IVehicleControllerInterface::bindVehicle(AVehicleBase* target) {
 	rightSensor->NormalizeRange = FVector2D(1, 0);
 	rightSensor->RayQuantity = 2;
 	rightSensor->TraceWidth = 120;
-	rightSensor->RelativeLocation = FVector(location.X + extend.X, extend.Y, 120);
-	rightSensor->RelativeRotation = FRotator(0, 90, 0);
+	rightSensor->SetRelativeLocation(FVector(location.X + extend.X, extend.Y, 120));
+	rightSensor->SetRelativeRotation(FRotator(0, 90, 0));
 	rightSensor->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform);
 	rightSensor->RegisterComponent();
 	// setup left sensor
@@ -89,24 +89,24 @@ void IVehicleControllerInterface::bindVehicle(AVehicleBase* target) {
 	leftSensor->NormalizeRange = FVector2D(1, 0);
 	leftSensor->RayQuantity = 2;
 	leftSensor->TraceWidth = 120;
-	leftSensor->RelativeLocation = FVector(location.X + extend.X, -extend.Y, 120);
-	leftSensor->RelativeRotation = FRotator(0, -90, 0);
+	leftSensor->SetRelativeLocation(FVector(location.X + extend.X, -extend.Y, 120));
+	leftSensor->SetRelativeRotation(FRotator(0, -90, 0));
 	leftSensor->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform);
 	leftSensor->RegisterComponent();
 	// setup lane switch sensor
 	laneSensor = NewObject<UObstacleSensorComponent>(target);
 	laneSensor->TraceLength = FVector2D(0, 2000);
-	laneSensor->RelativeLocation = headSensor->RelativeLocation;
+	laneSensor->SetRelativeLocation(headSensor->GetRelativeLocation());
 	laneSensor->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform);
 	laneSensor->RegisterComponent();
 	laneSensor->SetActive(false);
 	
 	// draw sensor debug
 	if (target->DrawObstacleSensors) {
-		headSensor->bVisible = true;
+		headSensor->SetVisibleFlag(true);
 		//backSensor->bVisible = true;
-		rightSensor->bVisible = true;
-		leftSensor->bVisible = true;
+		rightSensor->SetVisibleFlag(true);
+		leftSensor->SetVisibleFlag(true);
 		//laneSensor->bVisible = true;
 	}
 
@@ -201,8 +201,13 @@ void IVehicleControllerInterface::computeDrivingInput(float deltaSeconds) {
 				float traceAngleScale = 1 - FMath::Abs(steering);
 				headSensor->TraceWidth = traceAngleScale * 40;
 				headSensor->TraceAngle = traceAngleScale * 10;
-				headSensor->RelativeLocation.Y = steering * 80;
-				headSensor->RelativeRotation.Yaw = steering * 90;
+				FVector headSensorRelativeLoc = headSensor->GetRelativeLocation();
+				headSensorRelativeLoc.Y = steering * 80;
+				FRotator headSensorRelativeRot;
+				headSensorRelativeRot = headSensor->GetRelativeRotation();
+				headSensorRelativeRot.Yaw = steering * 90;
+				headSensor->SetRelativeLocation(headSensorRelativeLoc);
+				headSensor->SetRelativeRotation(headSensorRelativeRot);
 			}
 			else {
 				// no move, no steering
@@ -374,7 +379,9 @@ void IVehicleControllerInterface::switchLane(int targetLane, float forwardDistan
 bool IVehicleControllerInterface::canSwitchLeft() {
 	if (currentLane > inPort->getMinRight()) {
 		//laneSensor->RelativeRotation.Yaw = headSensor->RelativeRotation.Yaw;
-		laneSensor->RelativeLocation.Y = -500;
+		FVector laneSensorRelativeLoc = laneSensor->GetRelativeLocation();
+		laneSensorRelativeLoc.Y = -500;
+		laneSensor->SetRelativeLocation(laneSensorRelativeLoc);
 		laneSensor->DoCollisionTest();
 		return laneSensor->GetNearestDistance() > headSensor->GetNearestDistance() + 400;
 	}
@@ -384,7 +391,9 @@ bool IVehicleControllerInterface::canSwitchLeft() {
 bool IVehicleControllerInterface::canSwitchRight() {
 	if (currentLane < inPort->getMaxRight()) {
 		//laneSensor->RelativeRotation.Yaw = headSensor->RelativeRotation.Yaw;
-		laneSensor->RelativeLocation.Y = 500;
+		FVector laneSensorRelativeLoc = laneSensor->GetRelativeLocation();
+		laneSensorRelativeLoc.Y = 500;
+		laneSensor->SetRelativeLocation(laneSensorRelativeLoc);
 		laneSensor->DoCollisionTest();
 		return laneSensor->GetNearestDistance() > headSensor->GetNearestDistance() + 400;
 	}

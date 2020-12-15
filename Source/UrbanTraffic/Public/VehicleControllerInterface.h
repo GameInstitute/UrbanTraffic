@@ -27,7 +27,7 @@
 #include "ObstacleSensorComponent.h"
 #include "RoadNode.h"
 #include "CoreMinimal.h"
-#include "Interface.h"
+#include "UObject/Interface.h"
 #include "VehicleControllerInterface.generated.h"
 
 class AUrbanTraffic;

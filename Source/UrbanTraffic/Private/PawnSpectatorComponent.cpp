@@ -30,8 +30,7 @@ UPawnSpectatorComponent::UPawnSpectatorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	// create chase spring arm
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->RelativeLocation = FVector(0, 0, 110);
-	SpringArm->RelativeRotation = FRotator(-10, 0, 0);
+	SpringArm->SetRelativeLocationAndRotation(FVector(0, 0, 110), FRotator(-10, 0, 0));
 	SpringArm->TargetArmLength = 800;
 	SpringArm->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	// create chase camera
@@ -60,7 +59,7 @@ void UPawnSpectatorComponent::TickComponent(float DeltaTime, ELevelTick TickType
 				SpringArm->TargetArmLength += w * 100;
 			}
 			// update SpringArm rotation
-			FRotator rot = SpringArm->RelativeRotation;
+			FRotator rot = SpringArm->GetRelativeRotation();
 			rot.Pitch = FMath::ClampAngle(rot.Pitch - y, -89, 89);
 			rot.Yaw += x;
 			SpringArm->SetRelativeRotation(rot);
@@ -69,7 +68,7 @@ void UPawnSpectatorComponent::TickComponent(float DeltaTime, ELevelTick TickType
 			// update active camera rotation
 			UCameraComponent* cam = cameras[cameraIndex];
 			if (cam->ComponentHasTag(TEXT("Rotatable"))) {
-				FRotator rot = cam->RelativeRotation;
+				FRotator rot = cam->GetRelativeRotation();
 				rot.Pitch = FMath::ClampAngle(rot.Pitch - y, -89, 89);
 				rot.Yaw += x;
 				cam->SetRelativeRotation(rot);

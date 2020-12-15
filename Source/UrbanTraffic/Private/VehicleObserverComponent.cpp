@@ -69,7 +69,7 @@ void UVehicleObserverComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 
 	// fire control
 	if (vehicle && fireComponent) {
-		float fireScale = fireComponent->RelativeScale3D.X;
+		float fireScale = fireComponent->GetRelativeScale3D().X;
 		if (fireScale < FireScale) {
 			fireScale += (DeltaTime * 0.6f);
 			fireComponent->SetRelativeScale3D(FVector(fireScale));
@@ -184,7 +184,7 @@ void UVehicleObserverComponent::GiveFire(float DamagePerSecond) {
 		// attach and play fire particle
 		fireComponent = NewObject<UParticleSystemComponent>(vehicle);
 		fireComponent->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform);
-		fireComponent->RelativeScale3D = FVector(0.5f);
+		fireComponent->SetRelativeScale3D(FVector(0.5f));
 		fireComponent->SetTemplate(FireTemplate);
 		fireComponent->RegisterComponent();
 		if (FireSound) {

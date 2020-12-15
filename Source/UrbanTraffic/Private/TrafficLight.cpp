@@ -36,7 +36,7 @@ ATrafficLight::ATrafficLight() {
 	VehicleBlocker->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	VehicleBlocker->SetCollisionResponseToChannel(ECollisionChannel::ECC_PhysicsBody, ECollisionResponse::ECR_Block);
 	VehicleBlocker->InitBoxExtent(FVector(5, 3, 3));
-	VehicleBlocker->RelativeLocation = FVector(-3, 1, 0);
+	VehicleBlocker->SetRelativeLocation(FVector(-3, 1, 0));
 	VehicleBlocker->ShapeColor = FColor::Cyan;
 	VehicleBlocker->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 

@@ -32,7 +32,8 @@ UObstacleSensorComponent::UObstacleSensorComponent() {
 	PrimaryComponentTick.TickGroup = TG_PrePhysics;
 	bTickInEditor = true;
 	bAutoActivate = true;
-	bVisible = false;
+	//bVisible = false;
+	SetVisibleFlag(false);
 }
 
 void UObstacleSensorComponent::OnRegister() {
@@ -48,7 +49,7 @@ void UObstacleSensorComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 	if (IsActive()) {
 		DoCollisionTest();
 	}
-	if (bVisible) {
+	if (GetVisibleFlag()) {
 		UWorld* world = GetWorld();
 		for (FHitResult hit : hitResults) {
 			FVector end = hit.bBlockingHit ? hit.Location : hit.TraceEnd;

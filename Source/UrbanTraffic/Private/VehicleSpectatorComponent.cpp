@@ -40,7 +40,7 @@ void UVehicleSpectatorComponent::SetSpectatorCamera(int cameraId) {
 		// add left planars
 		mirrorLeft = NewObject<UPlanarReflectionComponent>(vehicle);
 		mirrorLeft->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform, "mirror_l");
-		mirrorLeft->RelativeScale3D = FVector(0.004f, 0.008f, 1);
+		mirrorLeft->SetRelativeScale3D(FVector(0.004f, 0.008f, 1));
 		mirrorLeft->PrefilterRoughness = 0;
 		mirrorLeft->DistanceFromPlaneFadeoutEnd = 0;
 		mirrorLeft->PrefilterRoughnessDistance = 0;
@@ -50,7 +50,7 @@ void UVehicleSpectatorComponent::SetSpectatorCamera(int cameraId) {
 		// add right planars
 		mirrorRight = NewObject<UPlanarReflectionComponent>(vehicle);
 		mirrorRight->AttachToComponent(root, FAttachmentTransformRules::KeepRelativeTransform, "mirror_r");
-		mirrorRight->RelativeScale3D = FVector(0.004f, 0.008f, 1);
+		mirrorRight->SetRelativeScale3D(FVector(0.004f, 0.008f, 1));
 		mirrorRight->PrefilterRoughness = 0;
 		mirrorRight->DistanceFromPlaneFadeoutEnd = 0;
 		mirrorRight->PrefilterRoughnessDistance = 0;

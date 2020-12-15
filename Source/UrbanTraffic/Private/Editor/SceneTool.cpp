@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "SceneTool.h"
+#include "Editor/SceneTool.h"
 #include "EngineUtils.h"
 #include "Engine/StaticMeshActor.h"
 

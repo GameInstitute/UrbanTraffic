@@ -45,7 +45,7 @@ void ACollisionLoader::BeginPlay()
 	AActor* collAct = nullptr;
 	USceneComponent* collCom = nullptr;
 	/*std::ifstream is(*(FPaths::ProjectDir() + dataFile));*/
-	std::ifstream is(*(FPaths::GameDir() + DataFile));
+	std::ifstream is(*(FPaths::ProjectDir() + DataFile));
 	std::string line;
 	while (std::getline(is, line)) {
 		if (line.compare("break") == 0) {
